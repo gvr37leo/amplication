@@ -3,5 +3,7 @@ import { SignupCreateNestedManyWithoutTournamentsInput } from "./SignupCreateNes
 
 export type TournamentCreateInput = {
   matches?: MatchCreateNestedManyWithoutTournamentsInput;
+  name?: string | null;
   signups?: SignupCreateNestedManyWithoutTournamentsInput;
+  startsat?: Date | null;
 };

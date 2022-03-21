@@ -10,7 +10,7 @@ https://docs.amplication.com/docs/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { PrismaService } from "nestjs-prisma";
-import { Prisma, Match, Tournament } from "@prisma/client";
+import { Prisma, Match, User, Tournament } from "@prisma/client";
 
 export class MatchServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -45,6 +45,22 @@ export class MatchServiceBase {
     args: Prisma.SelectSubset<T, Prisma.MatchDeleteArgs>
   ): Promise<Match> {
     return this.prisma.match.delete(args);
+  }
+
+  async getPlayer1(parentId: string): Promise<User | null> {
+    return this.prisma.match
+      .findUnique({
+        where: { id: parentId },
+      })
+      .player1();
+  }
+
+  async getPlayer2(parentId: string): Promise<User | null> {
+    return this.prisma.match
+      .findUnique({
+        where: { id: parentId },
+      })
+      .player2();
   }
 
   async getTournament(parentId: string): Promise<Tournament | null> {

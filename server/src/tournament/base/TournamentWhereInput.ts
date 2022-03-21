@@ -15,7 +15,9 @@ import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
 import { MatchListRelationFilter } from "../../match/base/MatchListRelationFilter";
+import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { SignupListRelationFilter } from "../../signup/base/SignupListRelationFilter";
+import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 @InputType()
 class TournamentWhereInput {
   @ApiProperty({
@@ -43,6 +45,17 @@ class TournamentWhereInput {
 
   @ApiProperty({
     required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  name?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
     type: () => SignupListRelationFilter,
   })
   @ValidateNested()
@@ -52,5 +65,16 @@ class TournamentWhereInput {
     nullable: true,
   })
   signups?: SignupListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: DateTimeNullableFilter,
+  })
+  @Type(() => DateTimeNullableFilter)
+  @IsOptional()
+  @Field(() => DateTimeNullableFilter, {
+    nullable: true,
+  })
+  startsat?: DateTimeNullableFilter;
 }
 export { TournamentWhereInput };

@@ -10,58 +10,35 @@ https://docs.amplication.com/docs/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { InputType, Field } from "@nestjs/graphql";
+import { MatchWhereUniqueInput } from "../../match/base/MatchWhereUniqueInput";
 import { ApiProperty } from "@nestjs/swagger";
-import { SortOrder } from "../../util/SortOrder";
-
-@InputType({
-  isAbstract: true,
-  description: undefined,
-})
-class TournamentOrderByInput {
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @Field(() => SortOrder, {
+@InputType()
+class MatchUpdateManyWithoutUsersInput {
+  @Field(() => [MatchWhereUniqueInput], {
     nullable: true,
   })
-  createdAt?: SortOrder;
-
   @ApiProperty({
     required: false,
-    enum: ["asc", "desc"],
+    type: () => [MatchWhereUniqueInput],
   })
-  @Field(() => SortOrder, {
+  connect?: Array<MatchWhereUniqueInput>;
+
+  @Field(() => [MatchWhereUniqueInput], {
     nullable: true,
   })
-  id?: SortOrder;
-
   @ApiProperty({
     required: false,
-    enum: ["asc", "desc"],
+    type: () => [MatchWhereUniqueInput],
   })
-  @Field(() => SortOrder, {
+  disconnect?: Array<MatchWhereUniqueInput>;
+
+  @Field(() => [MatchWhereUniqueInput], {
     nullable: true,
   })
-  name?: SortOrder;
-
   @ApiProperty({
     required: false,
-    enum: ["asc", "desc"],
+    type: () => [MatchWhereUniqueInput],
   })
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  startsat?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  updatedAt?: SortOrder;
+  set?: Array<MatchWhereUniqueInput>;
 }
-
-export { TournamentOrderByInput };
+export { MatchUpdateManyWithoutUsersInput };

@@ -11,11 +11,37 @@ https://docs.amplication.com/docs/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { StringFilter } from "../../util/StringFilter";
+import { WebpageListRelationFilter } from "./WebpageListRelationFilter";
+import { ValidateNested, IsOptional } from "class-validator";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { StringFilter } from "../../util/StringFilter";
+import { WebpageWhereUniqueInput } from "./WebpageWhereUniqueInput";
 @InputType()
 class WebpageWhereInput {
+  @ApiProperty({
+    required: false,
+    type: () => WebpageListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => WebpageListRelationFilter)
+  @IsOptional()
+  @Field(() => WebpageListRelationFilter, {
+    nullable: true,
+  })
+  children?: WebpageListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  content?: StringNullableFilter;
+
   @ApiProperty({
     required: false,
     type: StringFilter,
@@ -26,5 +52,28 @@ class WebpageWhereInput {
     nullable: true,
   })
   id?: StringFilter;
+
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  name?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => WebpageWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => WebpageWhereUniqueInput)
+  @IsOptional()
+  @Field(() => WebpageWhereUniqueInput, {
+    nullable: true,
+  })
+  parent?: WebpageWhereUniqueInput;
 }
 export { WebpageWhereInput };

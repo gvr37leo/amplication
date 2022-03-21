@@ -11,10 +11,30 @@ https://docs.amplication.com/docs/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsDate, IsString } from "class-validator";
+import { ValidateNested, IsOptional, IsString, IsDate } from "class-validator";
 import { Type } from "class-transformer";
 @ObjectType()
 class Webpage {
+  @ApiProperty({
+    required: false,
+    type: () => [Webpage],
+  })
+  @ValidateNested()
+  @Type(() => Webpage)
+  @IsOptional()
+  children?: Array<Webpage>;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  content!: string | null;
+
   @ApiProperty({
     required: true,
   })
@@ -30,6 +50,26 @@ class Webpage {
   @IsString()
   @Field(() => String)
   id!: string;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  name!: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => Webpage,
+  })
+  @ValidateNested()
+  @Type(() => Webpage)
+  @IsOptional()
+  parent?: Webpage | null;
 
   @ApiProperty({
     required: true,
