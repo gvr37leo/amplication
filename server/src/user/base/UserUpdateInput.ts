@@ -11,11 +11,23 @@ https://docs.amplication.com/docs/how-to/custom-code
   */
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsOptional, ValidateNested } from "class-validator";
-import { SignupUpdateManyWithoutUsersInput } from "./SignupUpdateManyWithoutUsersInput";
+import { IsString, IsOptional, IsInt, ValidateNested } from "class-validator";
+import { MatchUpdateManyWithoutUsersInput } from "./MatchUpdateManyWithoutUsersInput";
 import { Type } from "class-transformer";
+import { SignupUpdateManyWithoutUsersInput } from "./SignupUpdateManyWithoutUsersInput";
 @InputType()
 class UserUpdateInput {
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  draws?: string | null;
+
   @ApiProperty({
     required: false,
     type: String,
@@ -37,6 +49,41 @@ class UserUpdateInput {
     nullable: true,
   })
   lastName?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsInt()
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  losses?: number | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => MatchUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => MatchUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => MatchUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  matches1?: MatchUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    type: () => MatchUpdateManyWithoutUsersInput,
+  })
+  @ValidateNested()
+  @Type(() => MatchUpdateManyWithoutUsersInput)
+  @IsOptional()
+  @Field(() => MatchUpdateManyWithoutUsersInput, {
+    nullable: true,
+  })
+  matches2?: MatchUpdateManyWithoutUsersInput;
 
   @ApiProperty({
     required: false,
@@ -83,6 +130,28 @@ class UserUpdateInput {
   @Field(() => String, {
     nullable: true,
   })
+  tournamentwins?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
   username?: string;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsInt()
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  wins?: number | null;
 }
 export { UserUpdateInput };

@@ -12,45 +12,61 @@ const nonExistingId = "nonExistingId";
 const existingId = "existingId";
 const CREATE_INPUT = {
   createdAt: new Date(),
+  draws: "exampleDraws",
   firstName: "exampleFirstName",
   id: "exampleId",
   lastName: "exampleLastName",
+  losses: 42,
   password: "examplePassword",
   roles: ["exampleRoles"],
+  tournamentwins: "exampleTournamentwins",
   updatedAt: new Date(),
   username: "exampleUsername",
+  wins: 42,
 };
 const CREATE_RESULT = {
   createdAt: new Date(),
+  draws: "exampleDraws",
   firstName: "exampleFirstName",
   id: "exampleId",
   lastName: "exampleLastName",
+  losses: 42,
   password: "examplePassword",
   roles: ["exampleRoles"],
+  tournamentwins: "exampleTournamentwins",
   updatedAt: new Date(),
   username: "exampleUsername",
+  wins: 42,
 };
 const FIND_MANY_RESULT = [
   {
     createdAt: new Date(),
+    draws: "exampleDraws",
     firstName: "exampleFirstName",
     id: "exampleId",
     lastName: "exampleLastName",
+    losses: 42,
     password: "examplePassword",
     roles: ["exampleRoles"],
+    tournamentwins: "exampleTournamentwins",
     updatedAt: new Date(),
     username: "exampleUsername",
+    wins: 42,
   },
 ];
 const FIND_ONE_RESULT = {
   createdAt: new Date(),
+  draws: "exampleDraws",
   firstName: "exampleFirstName",
   id: "exampleId",
   lastName: "exampleLastName",
+  losses: 42,
   password: "examplePassword",
   roles: ["exampleRoles"],
+  tournamentwins: "exampleTournamentwins",
   updatedAt: new Date(),
   username: "exampleUsername",
+  wins: 42,
 };
 
 const service = {

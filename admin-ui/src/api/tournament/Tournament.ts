@@ -6,5 +6,6 @@ export type Tournament = {
   id: string;
   matches?: Array<Match>;
   signups?: Array<Signup>;
+  startsat: Date | null;
   updatedAt: Date;
 };

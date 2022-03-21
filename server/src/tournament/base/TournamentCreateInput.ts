@@ -12,7 +12,7 @@ https://docs.amplication.com/docs/how-to/custom-code
 import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { MatchCreateNestedManyWithoutTournamentsInput } from "./MatchCreateNestedManyWithoutTournamentsInput";
-import { ValidateNested, IsOptional } from "class-validator";
+import { ValidateNested, IsOptional, IsDate } from "class-validator";
 import { Type } from "class-transformer";
 import { SignupCreateNestedManyWithoutTournamentsInput } from "./SignupCreateNestedManyWithoutTournamentsInput";
 @InputType()
@@ -40,5 +40,16 @@ class TournamentCreateInput {
     nullable: true,
   })
   signups?: SignupCreateNestedManyWithoutTournamentsInput;
+
+  @ApiProperty({
+    required: false,
+  })
+  @IsDate()
+  @Type(() => Date)
+  @IsOptional()
+  @Field(() => Date, {
+    nullable: true,
+  })
+  startsat?: Date | null;
 }
 export { TournamentCreateInput };

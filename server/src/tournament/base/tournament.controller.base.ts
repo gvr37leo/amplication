@@ -80,6 +80,7 @@ export class TournamentControllerBase {
       select: {
         createdAt: true,
         id: true,
+        startsat: true,
         updatedAt: true,
       },
     });
@@ -116,6 +117,7 @@ export class TournamentControllerBase {
       select: {
         createdAt: true,
         id: true,
+        startsat: true,
         updatedAt: true,
       },
     });
@@ -151,6 +153,7 @@ export class TournamentControllerBase {
       select: {
         createdAt: true,
         id: true,
+        startsat: true,
         updatedAt: true,
       },
     });
@@ -207,6 +210,7 @@ export class TournamentControllerBase {
         select: {
           createdAt: true,
           id: true,
+          startsat: true,
           updatedAt: true,
         },
       });
@@ -243,6 +247,7 @@ export class TournamentControllerBase {
         select: {
           createdAt: true,
           id: true,
+          startsat: true,
           updatedAt: true,
         },
       });
@@ -285,6 +290,22 @@ export class TournamentControllerBase {
       select: {
         createdAt: true,
         id: true,
+
+        player1: {
+          select: {
+            id: true,
+          },
+        },
+
+        player2: {
+          select: {
+            id: true,
+          },
+        },
+
+        score1: true,
+        score2: true,
+        scoreReported: true,
 
         tournament: {
           select: {

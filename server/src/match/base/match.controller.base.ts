@@ -73,6 +73,18 @@ export class MatchControllerBase {
       data: {
         ...data,
 
+        player1: data.player1
+          ? {
+              connect: data.player1,
+            }
+          : undefined,
+
+        player2: data.player2
+          ? {
+              connect: data.player2,
+            }
+          : undefined,
+
         tournament: data.tournament
           ? {
               connect: data.tournament,
@@ -82,6 +94,22 @@ export class MatchControllerBase {
       select: {
         createdAt: true,
         id: true,
+
+        player1: {
+          select: {
+            id: true,
+          },
+        },
+
+        player2: {
+          select: {
+            id: true,
+          },
+        },
+
+        score1: true,
+        score2: true,
+        scoreReported: true,
 
         tournament: {
           select: {
@@ -126,6 +154,22 @@ export class MatchControllerBase {
         createdAt: true,
         id: true,
 
+        player1: {
+          select: {
+            id: true,
+          },
+        },
+
+        player2: {
+          select: {
+            id: true,
+          },
+        },
+
+        score1: true,
+        score2: true,
+        scoreReported: true,
+
         tournament: {
           select: {
             id: true,
@@ -167,6 +211,22 @@ export class MatchControllerBase {
       select: {
         createdAt: true,
         id: true,
+
+        player1: {
+          select: {
+            id: true,
+          },
+        },
+
+        player2: {
+          select: {
+            id: true,
+          },
+        },
+
+        score1: true,
+        score2: true,
+        scoreReported: true,
 
         tournament: {
           select: {
@@ -229,6 +289,18 @@ export class MatchControllerBase {
         data: {
           ...data,
 
+          player1: data.player1
+            ? {
+                connect: data.player1,
+              }
+            : undefined,
+
+          player2: data.player2
+            ? {
+                connect: data.player2,
+              }
+            : undefined,
+
           tournament: data.tournament
             ? {
                 connect: data.tournament,
@@ -238,6 +310,22 @@ export class MatchControllerBase {
         select: {
           createdAt: true,
           id: true,
+
+          player1: {
+            select: {
+              id: true,
+            },
+          },
+
+          player2: {
+            select: {
+              id: true,
+            },
+          },
+
+          score1: true,
+          score2: true,
+          scoreReported: true,
 
           tournament: {
             select: {
@@ -281,6 +369,22 @@ export class MatchControllerBase {
         select: {
           createdAt: true,
           id: true,
+
+          player1: {
+            select: {
+              id: true,
+            },
+          },
+
+          player2: {
+            select: {
+              id: true,
+            },
+          },
+
+          score1: true,
+          score2: true,
+          scoreReported: true,
 
           tournament: {
             select: {

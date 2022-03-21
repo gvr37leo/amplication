@@ -4,4 +4,5 @@ import { SignupUpdateManyWithoutTournamentsInput } from "./SignupUpdateManyWitho
 export type TournamentUpdateInput = {
   matches?: MatchUpdateManyWithoutTournamentsInput;
   signups?: SignupUpdateManyWithoutTournamentsInput;
+  startsat?: Date | null;
 };
