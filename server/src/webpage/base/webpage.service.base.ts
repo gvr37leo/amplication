@@ -46,4 +46,23 @@ export class WebpageServiceBase {
   ): Promise<Webpage> {
     return this.prisma.webpage.delete(args);
   }
+
+  async findChildren(
+    parentId: string,
+    args: Prisma.WebpageFindManyArgs
+  ): Promise<Webpage[]> {
+    return this.prisma.webpage
+      .findUnique({
+        where: { id: parentId },
+      })
+      .children(args);
+  }
+
+  async getParent(parentId: string): Promise<Webpage | null> {
+    return this.prisma.webpage
+      .findUnique({
+        where: { id: parentId },
+      })
+      .parent();
+  }
 }

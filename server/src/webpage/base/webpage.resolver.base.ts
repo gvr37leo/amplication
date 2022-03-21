@@ -19,6 +19,8 @@ import * as gqlUserRoles from "../../auth/gqlUserRoles.decorator";
 import * as abacUtil from "../../auth/abac.util";
 import { isRecordNotFoundError } from "../../prisma.util";
 import { MetaQueryPayload } from "../../util/MetaQueryPayload";
+import { CreateWebpageArgs } from "./CreateWebpageArgs";
+import { UpdateWebpageArgs } from "./UpdateWebpageArgs";
 import { DeleteWebpageArgs } from "./DeleteWebpageArgs";
 import { WebpageFindManyArgs } from "./WebpageFindManyArgs";
 import { WebpageFindUniqueArgs } from "./WebpageFindUniqueArgs";
@@ -98,6 +100,107 @@ export class WebpageResolverBase {
   @graphql.Mutation(() => Webpage)
   @nestAccessControl.UseRoles({
     resource: "Webpage",
+    action: "create",
+    possession: "any",
+  })
+  async createWebpage(
+    @graphql.Args() args: CreateWebpageArgs,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<Webpage> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "create",
+      possession: "any",
+      resource: "Webpage",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(
+      permission,
+      args.data
+    );
+    if (invalidAttributes.length) {
+      const properties = invalidAttributes
+        .map((attribute: string) => JSON.stringify(attribute))
+        .join(", ");
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new apollo.ApolloError(
+        `providing the properties: ${properties} on ${"Webpage"} creation is forbidden for roles: ${roles}`
+      );
+    }
+    // @ts-ignore
+    return await this.service.create({
+      ...args,
+      data: {
+        ...args.data,
+
+        parent: args.data.parent
+          ? {
+              connect: args.data.parent,
+            }
+          : undefined,
+      },
+    });
+  }
+
+  @graphql.Mutation(() => Webpage)
+  @nestAccessControl.UseRoles({
+    resource: "Webpage",
+    action: "update",
+    possession: "any",
+  })
+  async updateWebpage(
+    @graphql.Args() args: UpdateWebpageArgs,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<Webpage | null> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Webpage",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(
+      permission,
+      args.data
+    );
+    if (invalidAttributes.length) {
+      const properties = invalidAttributes
+        .map((attribute: string) => JSON.stringify(attribute))
+        .join(", ");
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new apollo.ApolloError(
+        `providing the properties: ${properties} on ${"Webpage"} update is forbidden for roles: ${roles}`
+      );
+    }
+    try {
+      // @ts-ignore
+      return await this.service.update({
+        ...args,
+        data: {
+          ...args.data,
+
+          parent: args.data.parent
+            ? {
+                connect: args.data.parent,
+              }
+            : undefined,
+        },
+      });
+    } catch (error) {
+      if (isRecordNotFoundError(error)) {
+        throw new apollo.ApolloError(
+          `No resource was found for ${JSON.stringify(args.where)}`
+        );
+      }
+      throw error;
+    }
+  }
+
+  @graphql.Mutation(() => Webpage)
+  @nestAccessControl.UseRoles({
+    resource: "Webpage",
     action: "delete",
     possession: "any",
   })
@@ -115,5 +218,55 @@ export class WebpageResolverBase {
       }
       throw error;
     }
+  }
+
+  @graphql.ResolveField(() => [Webpage])
+  @nestAccessControl.UseRoles({
+    resource: "Webpage",
+    action: "read",
+    possession: "any",
+  })
+  async children(
+    @graphql.Parent() parent: Webpage,
+    @graphql.Args() args: WebpageFindManyArgs,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<Webpage[]> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "Webpage",
+    });
+    const results = await this.service.findChildren(parent.id, args);
+
+    if (!results) {
+      return [];
+    }
+
+    return results.map((result) => permission.filter(result));
+  }
+
+  @graphql.ResolveField(() => Webpage, { nullable: true })
+  @nestAccessControl.UseRoles({
+    resource: "Webpage",
+    action: "read",
+    possession: "any",
+  })
+  async parent(
+    @graphql.Parent() parent: Webpage,
+    @gqlUserRoles.UserRoles() userRoles: string[]
+  ): Promise<Webpage | null> {
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "Webpage",
+    });
+    const result = await this.service.getParent(parent.id);
+
+    if (!result) {
+      return null;
+    }
+    return permission.filter(result);
   }
 }

@@ -10,58 +10,35 @@ https://docs.amplication.com/docs/how-to/custom-code
 ------------------------------------------------------------------------------
   */
 import { InputType, Field } from "@nestjs/graphql";
+import { WebpageWhereUniqueInput } from "./WebpageWhereUniqueInput";
 import { ApiProperty } from "@nestjs/swagger";
-import { SortOrder } from "../../util/SortOrder";
-
-@InputType({
-  isAbstract: true,
-  description: undefined,
-})
-class TournamentOrderByInput {
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @Field(() => SortOrder, {
+@InputType()
+class WebpageUpdateManyWithoutWebpagesInput {
+  @Field(() => [WebpageWhereUniqueInput], {
     nullable: true,
   })
-  createdAt?: SortOrder;
-
   @ApiProperty({
     required: false,
-    enum: ["asc", "desc"],
+    type: () => [WebpageWhereUniqueInput],
   })
-  @Field(() => SortOrder, {
+  connect?: Array<WebpageWhereUniqueInput>;
+
+  @Field(() => [WebpageWhereUniqueInput], {
     nullable: true,
   })
-  id?: SortOrder;
-
   @ApiProperty({
     required: false,
-    enum: ["asc", "desc"],
+    type: () => [WebpageWhereUniqueInput],
   })
-  @Field(() => SortOrder, {
+  disconnect?: Array<WebpageWhereUniqueInput>;
+
+  @Field(() => [WebpageWhereUniqueInput], {
     nullable: true,
   })
-  name?: SortOrder;
-
   @ApiProperty({
     required: false,
-    enum: ["asc", "desc"],
+    type: () => [WebpageWhereUniqueInput],
   })
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  startsat?: SortOrder;
-
-  @ApiProperty({
-    required: false,
-    enum: ["asc", "desc"],
-  })
-  @Field(() => SortOrder, {
-    nullable: true,
-  })
-  updatedAt?: SortOrder;
+  set?: Array<WebpageWhereUniqueInput>;
 }
-
-export { TournamentOrderByInput };
+export { WebpageUpdateManyWithoutWebpagesInput };

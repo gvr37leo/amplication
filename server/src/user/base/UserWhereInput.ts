@@ -15,9 +15,22 @@ import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { Type } from "class-transformer";
 import { IsOptional, ValidateNested } from "class-validator";
 import { StringFilter } from "../../util/StringFilter";
+import { IntNullableFilter } from "../../util/IntNullableFilter";
+import { MatchListRelationFilter } from "../../match/base/MatchListRelationFilter";
 import { SignupListRelationFilter } from "../../signup/base/SignupListRelationFilter";
 @InputType()
 class UserWhereInput {
+  @ApiProperty({
+    required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  draws?: StringNullableFilter;
+
   @ApiProperty({
     required: false,
     type: StringNullableFilter,
@@ -53,6 +66,41 @@ class UserWhereInput {
 
   @ApiProperty({
     required: false,
+    type: IntNullableFilter,
+  })
+  @Type(() => IntNullableFilter)
+  @IsOptional()
+  @Field(() => IntNullableFilter, {
+    nullable: true,
+  })
+  losses?: IntNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => MatchListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => MatchListRelationFilter)
+  @IsOptional()
+  @Field(() => MatchListRelationFilter, {
+    nullable: true,
+  })
+  matches1?: MatchListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => MatchListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => MatchListRelationFilter)
+  @IsOptional()
+  @Field(() => MatchListRelationFilter, {
+    nullable: true,
+  })
+  matches2?: MatchListRelationFilter;
+
+  @ApiProperty({
+    required: false,
     type: () => SignupListRelationFilter,
   })
   @ValidateNested()
@@ -65,6 +113,17 @@ class UserWhereInput {
 
   @ApiProperty({
     required: false,
+    type: StringNullableFilter,
+  })
+  @Type(() => StringNullableFilter)
+  @IsOptional()
+  @Field(() => StringNullableFilter, {
+    nullable: true,
+  })
+  tournamentwins?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
     type: StringFilter,
   })
   @Type(() => StringFilter)
@@ -73,5 +132,16 @@ class UserWhereInput {
     nullable: true,
   })
   username?: StringFilter;
+
+  @ApiProperty({
+    required: false,
+    type: IntNullableFilter,
+  })
+  @Type(() => IntNullableFilter)
+  @IsOptional()
+  @Field(() => IntNullableFilter, {
+    nullable: true,
+  })
+  wins?: IntNullableFilter;
 }
 export { UserWhereInput };

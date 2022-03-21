@@ -8,31 +8,46 @@ generator client {
 }
 
 model User {
-  createdAt DateTime @default(now())
-  firstName String?
-  id        String   @id @default(cuid())
-  lastName  String?
-  password  String
-  roles     String[]
-  signups   Signup[]
-  updatedAt DateTime @updatedAt
-  username  String   @unique
+  createdAt      DateTime @default(now())
+  draws          String?
+  firstName      String?
+  id             String   @id @default(cuid())
+  lastName       String?
+  losses         Int?
+  matches1       Match[]  @relation(name: "matches1")
+  matches2       Match[]  @relation(name: "matches2")
+  password       String
+  roles          String[]
+  signups        Signup[]
+  tournamentwins String?
+  updatedAt      DateTime @updatedAt
+  username       String   @unique
+  wins           Int?
 }
 
 model Tournament {
-  createdAt DateTime @default(now())
-  id        String   @id @default(cuid())
+  createdAt DateTime  @default(now())
+  id        String    @id @default(cuid())
   matches   Match[]
+  name      String?
   signups   Signup[]
-  updatedAt DateTime @updatedAt
+  startsat  DateTime?
+  updatedAt DateTime  @updatedAt
 }
 
 model Match {
-  createdAt    DateTime    @default(now())
-  id           String      @id @default(cuid())
-  tournament   Tournament? @relation(fields: [tournamentId], references: [id])
-  tournamentId String?
-  updatedAt    DateTime    @updatedAt
+  createdAt     DateTime    @default(now())
+  id            String      @id @default(cuid())
+  player1       User?       @relation(name: "matches1", fields: [player1Id], references: [id])
+  player1Id     String?
+  player2       User?       @relation(name: "matches2", fields: [player2Id], references: [id])
+  player2Id     String?
+  score1        Int?
+  score2        String?
+  scoreReported String?
+  tournament    Tournament? @relation(fields: [tournamentId], references: [id])
+  tournamentId  String?
+  updatedAt     DateTime    @updatedAt
 }
 
 model Signup {
@@ -47,7 +62,12 @@ model Signup {
 }
 
 model Webpage {
-  createdAt DateTime @default(now())
-  id        String   @id @default(cuid())
-  updatedAt DateTime @updatedAt
+  children  Webpage[] @relation(name: "children")
+  content   String?
+  createdAt DateTime  @default(now())
+  id        String    @id @default(cuid())
+  name      String?
+  parent    Webpage?  @relation(name: "children", fields: [parentId], references: [id])
+  parentId  String?
+  updatedAt DateTime  @updatedAt
 }

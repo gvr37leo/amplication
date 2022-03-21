@@ -70,10 +70,27 @@ export class WebpageControllerBase {
       );
     }
     return await this.service.create({
-      data: data,
+      data: {
+        ...data,
+
+        parent: data.parent
+          ? {
+              connect: data.parent,
+            }
+          : undefined,
+      },
       select: {
+        content: true,
         createdAt: true,
         id: true,
+        name: true,
+
+        parent: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -108,8 +125,17 @@ export class WebpageControllerBase {
     const results = await this.service.findMany({
       ...args,
       select: {
+        content: true,
         createdAt: true,
         id: true,
+        name: true,
+
+        parent: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -143,8 +169,17 @@ export class WebpageControllerBase {
     const result = await this.service.findOne({
       where: params,
       select: {
+        content: true,
         createdAt: true,
         id: true,
+        name: true,
+
+        parent: {
+          select: {
+            id: true,
+          },
+        },
+
         updatedAt: true,
       },
     });
@@ -197,10 +232,27 @@ export class WebpageControllerBase {
     try {
       return await this.service.update({
         where: params,
-        data: data,
+        data: {
+          ...data,
+
+          parent: data.parent
+            ? {
+                connect: data.parent,
+              }
+            : undefined,
+        },
         select: {
+          content: true,
           createdAt: true,
           id: true,
+          name: true,
+
+          parent: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
         },
       });
@@ -235,8 +287,17 @@ export class WebpageControllerBase {
       return await this.service.delete({
         where: params,
         select: {
+          content: true,
           createdAt: true,
           id: true,
+          name: true,
+
+          parent: {
+            select: {
+              id: true,
+            },
+          },
+
           updatedAt: true,
         },
       });
@@ -248,5 +309,189 @@ export class WebpageControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
+  @common.Get("/:id/children")
+  @nestAccessControl.UseRoles({
+    resource: "Webpage",
+    action: "read",
+    possession: "any",
+  })
+  @ApiNestedQuery(WebpageFindManyArgs)
+  async findManyChildren(
+    @common.Req() request: Request,
+    @common.Param() params: WebpageWhereUniqueInput,
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<Webpage[]> {
+    const query = plainToClass(WebpageFindManyArgs, request.query);
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "read",
+      possession: "any",
+      resource: "Webpage",
+    });
+    const results = await this.service.findChildren(params.id, {
+      ...query,
+      select: {
+        content: true,
+        createdAt: true,
+        id: true,
+        name: true,
+
+        parent: {
+          select: {
+            id: true,
+          },
+        },
+
+        updatedAt: true,
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results.map((result) => permission.filter(result));
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
+  @common.Post("/:id/children")
+  @nestAccessControl.UseRoles({
+    resource: "Webpage",
+    action: "update",
+    possession: "any",
+  })
+  async createChildren(
+    @common.Param() params: WebpageWhereUniqueInput,
+    @common.Body() body: WebpageWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      children: {
+        connect: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Webpage",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Webpage"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
+  @common.Patch("/:id/children")
+  @nestAccessControl.UseRoles({
+    resource: "Webpage",
+    action: "update",
+    possession: "any",
+  })
+  async updateChildren(
+    @common.Param() params: WebpageWhereUniqueInput,
+    @common.Body() body: WebpageWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      children: {
+        set: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Webpage",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Webpage"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.UseInterceptors(nestMorgan.MorganInterceptor("combined"))
+  @common.UseGuards(
+    defaultAuthGuard.DefaultAuthGuard,
+    nestAccessControl.ACGuard
+  )
+  @common.Delete("/:id/children")
+  @nestAccessControl.UseRoles({
+    resource: "Webpage",
+    action: "update",
+    possession: "any",
+  })
+  async deleteChildren(
+    @common.Param() params: WebpageWhereUniqueInput,
+    @common.Body() body: WebpageWhereUniqueInput[],
+    @nestAccessControl.UserRoles() userRoles: string[]
+  ): Promise<void> {
+    const data = {
+      children: {
+        disconnect: body,
+      },
+    };
+    const permission = this.rolesBuilder.permission({
+      role: userRoles,
+      action: "update",
+      possession: "any",
+      resource: "Webpage",
+    });
+    const invalidAttributes = abacUtil.getInvalidAttributes(permission, data);
+    if (invalidAttributes.length) {
+      const roles = userRoles
+        .map((role: string) => JSON.stringify(role))
+        .join(",");
+      throw new common.ForbiddenException(
+        `Updating the relationship: ${
+          invalidAttributes[0]
+        } of ${"Webpage"} is forbidden for roles: ${roles}`
+      );
+    }
+    await this.service.update({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

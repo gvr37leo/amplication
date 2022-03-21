@@ -9,5 +9,58 @@ https://docs.amplication.com/docs/how-to/custom-code
 
 ------------------------------------------------------------------------------
   */
-class WebpageCreateInput {}
+import { InputType, Field } from "@nestjs/graphql";
+import { ApiProperty } from "@nestjs/swagger";
+import { WebpageCreateNestedManyWithoutWebpagesInput } from "./WebpageCreateNestedManyWithoutWebpagesInput";
+import { ValidateNested, IsOptional, IsString } from "class-validator";
+import { Type } from "class-transformer";
+import { WebpageWhereUniqueInput } from "./WebpageWhereUniqueInput";
+@InputType()
+class WebpageCreateInput {
+  @ApiProperty({
+    required: false,
+    type: () => WebpageCreateNestedManyWithoutWebpagesInput,
+  })
+  @ValidateNested()
+  @Type(() => WebpageCreateNestedManyWithoutWebpagesInput)
+  @IsOptional()
+  @Field(() => WebpageCreateNestedManyWithoutWebpagesInput, {
+    nullable: true,
+  })
+  children?: WebpageCreateNestedManyWithoutWebpagesInput;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  content?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: String,
+  })
+  @IsString()
+  @IsOptional()
+  @Field(() => String, {
+    nullable: true,
+  })
+  name?: string | null;
+
+  @ApiProperty({
+    required: false,
+    type: () => WebpageWhereUniqueInput,
+  })
+  @ValidateNested()
+  @Type(() => WebpageWhereUniqueInput)
+  @IsOptional()
+  @Field(() => WebpageWhereUniqueInput, {
+    nullable: true,
+  })
+  parent?: WebpageWhereUniqueInput | null;
+}
 export { WebpageCreateInput };

@@ -12,8 +12,8 @@ import {
   BooleanField,
 } from "react-admin";
 
-import { TOURNAMENT_TITLE_FIELD } from "./TournamentTitle";
 import { USER_TITLE_FIELD } from "../user/UserTitle";
+import { TOURNAMENT_TITLE_FIELD } from "./TournamentTitle";
 
 export const TournamentShow = (props: ShowProps): React.ReactElement => {
   return (
@@ -21,6 +21,8 @@ export const TournamentShow = (props: ShowProps): React.ReactElement => {
       <SimpleShowLayout>
         <DateField source="createdAt" label="Created At" />
         <TextField label="ID" source="id" />
+        <TextField label="name" source="name" />
+        <TextField label="startsat" source="startsat" />
         <DateField source="updatedAt" label="Updated At" />
         <ReferenceManyField
           reference="Match"
@@ -30,6 +32,15 @@ export const TournamentShow = (props: ShowProps): React.ReactElement => {
           <Datagrid rowClick="show">
             <DateField source="createdAt" label="Created At" />
             <TextField label="ID" source="id" />
+            <ReferenceField label="player1" source="user.id" reference="User">
+              <TextField source={USER_TITLE_FIELD} />
+            </ReferenceField>
+            <ReferenceField label="player2" source="user.id" reference="User">
+              <TextField source={USER_TITLE_FIELD} />
+            </ReferenceField>
+            <TextField label="score1" source="score1" />
+            <TextField label="score2" source="score2" />
+            <TextField label="scoreReported" source="scoreReported" />
             <ReferenceField
               label="tournament"
               source="tournament.id"
